@@ -19,7 +19,8 @@ Create a Wordpress Plugin that would connect to it. 🚀
 5) Create pull request (on the respective branch) once it's done.
 
 ### Metrics
-- Estimated time of delivery: 8-12 (On an 4 hour schedule) @ 2021-11-05T12:00:00.000Z
+- Workload, estimated time to complete: 2-3 days | 8-12h (On an 4 hour schedule)
+- Estimated time of delivery: @2021-11-05T12:00:00.000Z
 - Has knowledge of Rest APIS
 - Has experience in Wordpress Plugin Development
 
