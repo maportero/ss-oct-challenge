@@ -16,10 +16,10 @@ Author URI: https://www.linkedin.com/in/marcoportero/
 
 function star_wars_get_people() {
 
-	$people = 'Nobody';
+	$people = '';
     // Get all characters from Star Wars API
 	$url = 'https://swapi.dev/api/people';
-
+    while (!is_null($url)){
       $curl = curl_init();
       curl_setopt_array($curl, array(
         CURLOPT_URL => $url,
@@ -39,17 +39,26 @@ function star_wars_get_people() {
       if ($err) {
         //Only show errors while testing
         printf( "cURL Error #: %s", $err);
+        $url=null;
 
       } else {
         
         $responseObj = json_decode($response);
-        $people = $responseObj->results;
-        
+        $arrObj= $responseObj->results;
+        if ($people === ''){
+        	$people = $arrObj;
+        }else{
+        	for ($i=0 ; $i < count($arrObj) ; $i++ ) { 
+        		array_push($people,$arrObj[$i]);
+        	}   	
+    	}
+        $url = $responseObj->next;       
       }
+    }
     
     // Get a random position from the array
     $pos = mt_rand( 0, count( $people ) - 1 );
-
+    
 	// And then randomly choose a star wars character
 	//return wptexturize( $people[ $pos ]->name . " | Gender: " . $people[ $pos ]->gender);
 	return $people[ $pos ];
@@ -58,6 +67,8 @@ function star_wars_get_people() {
 
 // Prepare data for show it.
 function star_wars() {
+
+	$map = ['Blue'];
 	$chosen = star_wars_get_people();
 	
 	$lang   = '';
@@ -86,6 +97,9 @@ function star_wars() {
 	<label for="skin_color">
 	<span>SKIN COLOR</span><input type="text" name="skin_color" value="'.$chosen->skin_color.'" disabled  />
 	</label>
+	<label for="eye_color">
+	<span>EYE COLOR</span><svg height="20" width="20"><circle cx="10" cy="10" r="10"  fill="'.$chosen->eye_color.'"/></svg><input type="text" style="margin-left:3px; width: 40%; border-bottom:none" name="eye_color" value="'.$chosen->eye_color.'" disabled  />
+	</label>
 	<label for="birth_year">
 	<span>BIRTH YEAR</span><input type="text" name="birth_year" value="'.$chosen->birth_year.'" disabled  />
 	</label>
@@ -95,7 +109,6 @@ function star_wars() {
 	</form></span>';
     $_SESSION['data_starwars_widget'] = $var; 
 }
-
 
 
 // Add information into any wp page through calling for template
